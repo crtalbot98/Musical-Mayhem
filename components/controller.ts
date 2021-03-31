@@ -14,11 +14,11 @@ export const Controller: PlayerController = {
 function moveLeft(player: any, c: HTMLCanvasElement): void{
     const pos = player.movementHandler.getPos();
     const size = player.getSize();
-    if(pos.x > c.offsetWidth/2 + size.w/2) player.movementHandler.updateSide('left')
+    if(player.collisionHandler.checkSide(pos, size) === 'right') player.movementHandler.updateSide('left')
 }
 
 function moveRight(player: any, c: HTMLCanvasElement): void{
     const pos = player.movementHandler.getPos();
     const size = player.getSize();
-    if(pos.x < c.offsetWidth/2 - size.w/2) player.movementHandler.updateSide('right')
+    if(player.collisionHandler.checkSide(pos, size) === 'left') player.movementHandler.updateSide('right')
 }
