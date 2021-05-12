@@ -1,4 +1,5 @@
-import {Coords, PlayerController} from "./types";
+import {PlayerController} from "./types";
+import {checkSide} from "./helpers.js";
 
 export const Controller: PlayerController = {
     65: { // A Key
@@ -12,13 +13,13 @@ export const Controller: PlayerController = {
 };
 
 function moveLeft(player: any, c: HTMLCanvasElement): void{
-    const pos = player.movementHandler.getPos();
+    const pos = player.movementHandler.getBounds();
     const size = player.getSize();
-    if(player.collisionHandler.checkSide(pos, size) === 'right') player.movementHandler.updateSide('left')
+    if(checkSide(pos, size, c) === 'right') player.movementHandler.updateSide('left')
 }
 
 function moveRight(player: any, c: HTMLCanvasElement): void{
-    const pos = player.movementHandler.getPos();
+    const pos = player.movementHandler.getBounds();
     const size = player.getSize();
-    if(player.collisionHandler.checkSide(pos, size) === 'left') player.movementHandler.updateSide('right')
+    if(checkSide(pos, size, c) === 'left') player.movementHandler.updateSide('right')
 }

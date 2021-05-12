@@ -17,3 +17,11 @@ type Control = {
     pressed: boolean,
     func: any
 }
+
+export type Bounds = {
+    [key: string]: Bound
+}
+
+export type Bound = {
+    [key: string]: number
+}

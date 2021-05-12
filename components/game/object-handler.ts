@@ -1,6 +1,4 @@
-import Triangle from "./triangle.js";
 import triangle from "./triangle.js";
-//Fix issue with objects not being added to object arr
 
 export default class ObjectHandler{ //Handler for storing and reusing game objects
 
@@ -28,7 +26,7 @@ export default class ObjectHandler{ //Handler for storing and reusing game objec
         if(this.pool.length < 1) return;
         let obj = this.pool.pop();
 
-        obj.movementHandler.resetPos();
+        obj.movementHandler.resetBounds();
         obj.generateRandomColor();
         obj.setOnscreen();
 

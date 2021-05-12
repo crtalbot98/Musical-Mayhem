@@ -1,6 +1,6 @@
 import CollisionHandler from "./collision-handler.js";
 import MovementHandler from "./movement-handler.js";
-import {Size} from "./types.js";
+import {Size, Bounds} from "./types.js";
 
 export default class Obstacle{
 
@@ -15,13 +15,13 @@ export default class Obstacle{
         this.c = c;
         this.size = size;
         this.movementHandler = new MovementHandler(c, this.size);
-        this.collisionHandler = new CollisionHandler(this.movementHandler.getPos(), c);
+        this.collisionHandler = new CollisionHandler(this.c);
         this.onScreen = true;
-        this.color = this.generateRandomColor()
+        this.color = this.generateRandomColor();
     }
 
     public updatePos(): void{
-        if(this.collisionHandler.withinCanvas(this.movementHandler.getPos())){
+        if(this.collisionHandler.withinCanvas(this.movementHandler.getBounds())){
             this.movementHandler.updateYPos();
             this.movementHandler.updateXPos()
         }
@@ -41,5 +41,9 @@ export default class Obstacle{
 
     public setOnscreen(){
         this.onScreen = true
+    }
+
+    public getSize(): Size{
+        return this.size
     }
 }

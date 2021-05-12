@@ -1,6 +1,6 @@
-import {Coords, Size} from "./types.js";
+import {Size} from "./types.js";
 import MovementHandler from "./movement-handler.js";
-import CollisionHandler from "./collision-handler.js";
+import PlayerCollisionHandler from "./player-collision-handler.js";
 
 export default class Player{
 
@@ -8,7 +8,7 @@ export default class Player{
     protected c: HTMLCanvasElement;
     protected size: Size;
     public movementHandler: MovementHandler;
-    public collisionHandler: CollisionHandler;
+    public collisionHandler: PlayerCollisionHandler;
     public isAlive: boolean;
 
     constructor(c: HTMLCanvasElement) {
@@ -19,14 +19,24 @@ export default class Player{
             h: this.c.offsetHeight/8
         };
         this.movementHandler = new MovementHandler(c, this.size);
-        this.collisionHandler = new CollisionHandler(this.movementHandler.getPos(), c);
+        this.collisionHandler = new PlayerCollisionHandler(this.c, this.size);
         this.isAlive = true
+        // window.setInterval(() => {
+        //     console.log(this.movementHandler.getBounds())
+        // }, 800)
     }
 
     public create(ctx: CanvasRenderingContext2D): void{ // Draws the player to the canvas
+        const bounds = this.movementHandler.getBounds();
+
         this.updateSize();
+        bounds.tr = {x: bounds.p1.x + this.size.w, y: bounds.p1.y};
+        bounds.bl = {x: bounds.p1.x, y: bounds.p1.y + this.size.h};
+        bounds.br = {x: bounds.p1.x + this.size.w, y: bounds.p1.y + this.size.h};
+        this.movementHandler.updateBounds(bounds);
+
         ctx.fillStyle = "#ff2c50";
-        ctx.fillRect(this.movementHandler.getPos().x, this.movementHandler.getPos().y, this.size.w, this.size.h)
+        ctx.fillRect(this.movementHandler.getBounds().p1.x, this.movementHandler.getBounds().p1.y, this.size.w, this.size.h)
     }
 
     private updateSize(): void{ // Updates the size of the player if the window is resized
@@ -38,15 +48,15 @@ export default class Player{
         return this.size
     }
 
-    public updatePos(): void{ // Updates the players position or resets it if out of bounds
-        if(this.collisionHandler.withinCanvas(this.movementHandler.getPos()) && this.isAlive){
+    public updatePos(obstacles: any[]): void{ // Updates the players position or resets it if out of bounds
+        if((!this.collisionHandler.withinPlayer(obstacles, this.movementHandler.getBounds()) && this.collisionHandler.withinCanvas(this.movementHandler.getBounds())) && this.isAlive){
             this.movementHandler.updateXPos();
             this.movementHandler.updateYPos();
         }
         else{
             this.isAlive = false;
             window.setTimeout(() => { //Player dead
-                if(!this.isAlive) this.movementHandler.resetPos();
+                if(!this.isAlive) this.movementHandler.resetBounds();
                 this.isAlive = true
             }, 1000);
         }

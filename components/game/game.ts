@@ -2,7 +2,7 @@ import ObjectHandler from "./object-handler.js";
 import {Controller} from "./controller.js";
 import Player from "./player.js";
 import GameBorder from "./game-borders.js";
-import {controlPressed} from "../helpers.js";
+import {controlPressed} from "./helpers.js";
 
 export default class Game{
 
@@ -25,12 +25,12 @@ export default class Game{
     }
 
     protected update(frame: number): void{ // Updates data for objects and scene
-        this.player.updatePos();
-        this.objectHandler.updateByFrame()
+        this.player.updatePos(this.objectHandler.getObjects());
+        this.objectHandler.updateByFrame();
     }
 
     protected draw(): void{ // Draws the scene every frame
-        this.ctx.clearRect(this.c.offsetWidth * 0.2, 0, this.c.offsetWidth*0.6, this.c.height);
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height); // Clears game scene
 
         this.gameBorder.create(); // border for the game area
 
