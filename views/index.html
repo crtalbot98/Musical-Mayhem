@@ -3,21 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Musical Mayhem</title>
-    <link rel="stylesheet" href="./styles/main.css">
+    <link type="text/css" rel="stylesheet" href="../styles/main.css">
 </head>
 <body>
 
-    <canvas></canvas>
+    <div id="game" class="hidden">
+        <canvas></canvas>
 
-    <div class="content">
-        <div class="list"></div>
+        <div class="content">
+            <div class="list"></div>
+        </div>
+    </div>
+
+    <div id="login" class="center light visible">
+        <div class="card dark">
+            <h1>Welcome to Musical Mayhem</h1>
+            <p>This is a game that uses the Spotify web player and web API to alter the difficulty.
+                To use this application you need to have a Spotify account.</p>
+            <a href="http://localhost:8888/login" class='btn-link light'>Log in with Spotify</a>
+        </div>
     </div>
 
     <!--    Spotify SDK script    -->
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script type="text/javascript" src="https://sdk.scdn.co/spotify-player.js"></script>
 
     <!-- Game Components -->
-    <script src="build/app.js" type="module"></script>
-    <script src="build/components/game.js" type="module"></script>
+    <script src="../build/app.js" type="module"></script>
+    <script src="../build/components/game/game.js" type="module"></script>
 </body>
 </html>
