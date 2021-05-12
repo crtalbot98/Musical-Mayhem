@@ -5,7 +5,13 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "outDir": "build"
+    "outDir": "build",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "spotify-web-sdk": ["./node_modules/spotify-web-sdk/build/*"],
+      "spotify-web-api-js": ["./node_modules/spotify-web-api-js/src"]
+    }
   },
   "include": ["components/**/*", "app.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]

@@ -1,0 +1,23 @@
+{
+  "name": "musical_mayhem",
+  "version": "1.0.0",
+  "description": "Web game made with TypeScript. Uses the Spotify web player.",
+  "main": "build/app.js",
+  "dependencies": {
+    "typescript": "^4.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crtalbot98/Musical-Mayhem.git"
+  },
+  "author": "Chandler Talbot",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crtalbot98/Musical-Mayhem/issues"
+  },
+  "homepage": "https://github.com/crtalbot98/Musical-Mayhem#readme"
+}
