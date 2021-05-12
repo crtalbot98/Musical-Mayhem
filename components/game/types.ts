@@ -25,3 +25,9 @@ export type Bounds = {
 export type Bound = {
     [key: string]: number
 }
+
+export type Params = {
+    access_token: string,
+    refresh_token: string,
+    user_id: string
+}

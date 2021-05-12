@@ -3,6 +3,7 @@ import {Controller} from "./controller.js";
 import Player from "./player.js";
 import GameBorder from "./game-borders.js";
 import {controlPressed} from "./helpers.js";
+import StateHandler from "../state-handler.js";
 
 export default class Game{
 
@@ -12,13 +13,15 @@ export default class Game{
     protected objectHandler: ObjectHandler;
     protected player: Player;
     protected gameBorder: GameBorder;
+    private stateHandler: StateHandler;
 
-    constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+    constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, state: StateHandler) {
         this.c = canvas;
         this.ctx = ctx;
         this.objectHandler = new ObjectHandler(this.ctx, this.c);
         this.player = new Player(this.c);
         this.gameBorder = new GameBorder(this.ctx, this.c);
+        this.stateHandler = state;
         window.setInterval(() => {
             this.objectHandler.addToObjects()
         }, 1200)
