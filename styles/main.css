@@ -3,6 +3,68 @@
     margin: 0;
 }
 
+@font-face {
+    font-display: auto;
+    font-family: 'Varela Round', serif;
+    src: url("https://fonts.googleapis.com/css?family=Varela+Round");
+}
+
 canvas{
     border-bottom: 2px solid black;
+}
+
+.card{
+    width: 65vw;
+    height: 50vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.21) 0 3px 3px 0;
+}
+
+.card p{
+    width: 75%;
+    font-size: 1.2em;
+}
+
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.light{
+    background: rgb(218,18,133);
+    background: linear-gradient(180deg, rgb(218, 18, 133) 0%, rgba(191,31,99,1) 100%);
+    color: #1c1d1a;
+}
+
+.dark{
+    color: #fff;
+    background-color: #1c1d1a;
+}
+
+.btn-link{
+    line-height: 50px;
+    width: 40%;
+    text-align: center;
+    border-radius: 2em;
+    text-decoration: none;
+    font-weight: bolder;
+}
+
+#login{
+    width: 100vw;
+    height: 100vh;
+}
+
+.visible{
+    display: flex;
+}
+
+.hidden{
+    display: none;
 }
