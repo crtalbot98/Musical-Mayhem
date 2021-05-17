@@ -2,7 +2,7 @@ import ObjectHandler from "./object-handler.js";
 import {Controller} from "./controller.js";
 import Player from "./player.js";
 import GameBorder from "./game-borders.js";
-import {controlPressed} from "./helpers.js";
+import {controlPressed} from "../helpers.js";
 import StateHandler from "../state-handler.js";
 
 export default class Game{
