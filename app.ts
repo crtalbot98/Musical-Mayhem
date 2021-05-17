@@ -3,6 +3,7 @@ import SpotifyPlayer from "./components/spotify/spotify-player.js";
 import SpotifyUI from "./components/spotify/spotify-ui.js";
 import {Params} from "./components/game/types.js";
 import StateHandler from "./components/state-handler.js";
+import {checkParams} from "./components/helpers.js";
 
 declare global {
     const Spotify: any;
@@ -17,48 +18,54 @@ declare global {
     const ctx = canvas.getContext('2d');
 
     initCanvas(canvas);
+    initEventListeners(canvas);
 
     const state = new StateHandler();
     const game = new Game(canvas, ctx, state);
     const params = hashParams();
-    const spotifyPlayer = new SpotifyPlayer(params, state);
-    const spotifyUI = new SpotifyUI(params, state);
+    const spotify = new SpotifyUI(params, state);
+    const player = spotify.getPlayer();
 
-    if(params !== undefined && 'access_token' in params && 'refresh_token' in params) updateVisibility();
+    if(checkParams(params)) updateVisibility();
+    else spotify.loginWarning();
 
     window.onSpotifyWebPlaybackSDKReady = () => {
-        spotifyPlayer.initSpotifyPlayer();
-        spotifyUI.initSpotifyApi();
+        if(checkParams(params)){
+            player.initSpotifyPlayer();
+            spotify.updatePlaylists();
+        }
     };
 
-    game.loop();
-
-    window.addEventListener('resize', () => {
-        initCanvas(canvas)
-    });
+    if(state.getState() === 'paused') game.loop();
 
     game.initControls()
 })();
 
+function initEventListeners(canvas: HTMLCanvasElement): void{
+    const noSpotify = document.querySelector("#no-spotify");
+
+    noSpotify.addEventListener('click', () => {
+        updateVisibility()
+    });
+
+    window.addEventListener('resize', () => {
+        initCanvas(canvas)
+    });
+}
+
 function initCanvas(canvas: HTMLCanvasElement): void{
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * .9;
+    canvas.height = window.innerHeight * .8;
 }
 
 function updateVisibility(): void{
-    const hidden = Array.from(document.querySelectorAll('.visible'));
-    const visible = Array.from(document.querySelectorAll('.hidden'));
-    const elements = hidden.concat(visible);
+    const displayNone = Array.from(document.querySelectorAll('.flex'));
+    const flex = Array.from(document.querySelectorAll('.display-none'));
+    const elements = displayNone.concat(flex);
 
     for(let i = 0; i < elements.length; i++){
-        if(elements[i].classList.contains('hidden')){
-            elements[i].classList.add('visible');
-            elements[i].classList.remove('hidden')
-        }
-        else if(elements[i].classList.contains('visible')){
-            elements[i].classList.add('hidden');
-            elements[i].classList.remove('visible')
-        }
+        if(elements[i].classList.contains('display-none')) elements[i].classList.replace('display-none', 'flex');
+        else if(elements[i].classList.contains('flex')) elements[i].classList.replace('flex', 'display-none');
     }
 }
 
