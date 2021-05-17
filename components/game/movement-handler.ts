@@ -1,5 +1,5 @@
 import {Size, Bounds, Bound} from "./types";
-import {checkSide} from "./helpers.js";
+import {checkSide} from "../helpers.js";
 
 export default class MovementHandler{// Handles the movement of objects on the x and y axis
 
