@@ -1,3 +1,5 @@
+@import "./variables.css";
+
 *{
     padding: 0;
     margin: 0;
@@ -5,12 +7,16 @@
 
 @font-face {
     font-display: auto;
-    font-family: 'Varela Round', serif;
-    src: url("https://fonts.googleapis.com/css?family=Varela+Round");
+    font-family: 'Varela Round';
+    src: url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+}
+
+html{
+    font-family: "Varela Round", sans-serif;
 }
 
 canvas{
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--dark-black);
 }
 
 .card{
@@ -22,6 +28,7 @@ canvas{
     justify-content: space-evenly;
     align-items: center;
     box-shadow: rgba(0, 0, 0, 0.21) 0 3px 3px 0;
+    border-radius: 0.25em;
 }
 
 .card p{
@@ -36,24 +43,46 @@ canvas{
     height: 100vh;
 }
 
+.row{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.light-gradient{
+    background: linear-gradient(145deg, var(--light-mulberry) 0%, var(--dark-purple) 100%);
+}
+
+.dark-gradient{
+    background: linear-gradient(145deg, var(--dark-black) 0%, var(--dark-black2) 100%);
+}
+
 .light{
-    background: rgb(218,18,133);
-    background: linear-gradient(180deg, rgb(218, 18, 133) 0%, rgba(191,31,99,1) 100%);
-    color: #1c1d1a;
+    background: var(--light-white);
+    color: var(--dark-black);
 }
 
 .dark{
-    color: #fff;
-    background-color: #1c1d1a;
+    color: var(--light-white);
+    background-color: var(--dark-black);
 }
 
 .btn-link{
-    line-height: 50px;
+    height: 3em;
     width: 40%;
     text-align: center;
     border-radius: 2em;
     text-decoration: none;
     font-weight: bolder;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-link:hover{
+    color: var(--light-white);
+    background-color: var(--dark-black);
+    border: 2px solid var(--light-white);
 }
 
 #login{
@@ -61,10 +90,102 @@ canvas{
     height: 100vh;
 }
 
-.visible{
+#login h1{
+    color: var(--light-mulberry);
+}
+
+.flex{
     display: flex;
 }
 
-.hidden{
+.display-none{
     display: none;
+}
+
+.visible{
+    visibility: unset;
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+.content{
+    position: absolute;
+    bottom: 0;
+    height: 20%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5em;
+    display: flex;
+    color: var(--light-white);
+}
+
+.list::-webkit-scrollbar{
+    width: 0.5em;
+}
+
+.list::-webkit-scrollbar-track{
+    background-color: var(--dark-black2);
+}
+
+.list::-webkit-scrollbar-thumb{
+    background-color: var(--light-white);
+}
+
+.list{
+    overflow-y: scroll;
+    height: 100%;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    padding: 0 0.5em 0.5em 0;
+}
+
+.list div{
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: row;
+}
+
+.list div div{
+    display: flex;
+    flex-direction: column;
+}
+
+.list div p{
+    display: inline-block;
+    margin-left: 0.5em;
+    /*align-self: flex-end;*/
+}
+
+.list img{
+    width: 3em;
+    height: 3em;
+}
+
+.list div:hover{
+    background-color: var(--dark-black);
+}
+
+.fixed-border{
+    height: 75%;
+    width: 20%;
+    position: fixed;
+}
+
+@media screen and (min-width: 1300px){
+    .list{
+        padding: 1em 0 0 0.5em;
+    }
+
+    #playlists{
+        top: 0;
+        left: 0;
+    }
+
+    #tracks{
+        top: 0;
+        right: 0;
+    }
+
 }
