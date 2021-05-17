@@ -1,5 +1,5 @@
 import {PlayerController} from "./types";
-import {checkSide} from "./helpers.js";
+import {checkSide} from "../helpers.js";
 
 export const Controller: PlayerController = {
     65: { // A Key
