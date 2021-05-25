@@ -1,4 +1,5 @@
 import StateHandler from "../state-handler.js";
+import {fetchSpotifyAPI, updateVisibility} from "../helpers.js";
 
 export default class SpotifyPlayer{
 
@@ -25,14 +26,14 @@ export default class SpotifyPlayer{
         });
 
         // Error handling
-        player.addListener('initialization_error', ({message}: any) => { alert(message) });
-        player.addListener('authentication_error', ({message}: any) => { alert(message) });
-        player.addListener('account_error', ({message}: any) => { alert(message) });
-        player.addListener('playback_error', ({message}: any) => { alert(message) });
+        player.addListener('initialization_error', ({message}: any) => { updateVisibility() });
+        player.addListener('authentication_error', ({message}: any) => { updateVisibility() });
+        player.addListener('account_error', ({message}: any) => { updateVisibility() });
+        player.addListener('playback_error', ({message}: any) => { updateVisibility() });
 
         // Playback status updates
         player.addListener('player_state_changed', (state: any) => {
-            if(state) console.log(state)
+            // if(state) console.log(state)
         });
 
         // Ready
@@ -45,14 +46,14 @@ export default class SpotifyPlayer{
         // Not Ready
         player.addListener('not_ready', ({device_id}: any) => {
             this.ready = false;
-            alert(`Device ID has gone offline: ${device_id}`)
+            updateVisibility()
         });
 
         // Connect to the player
         player.connect()
     }
 
-    public playSong(uri: string): void{
+    public playSong(uri: string, id: string): void{
         if(!this.player) return;
         fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.id}`, {
             method: 'PUT',
@@ -61,6 +62,27 @@ export default class SpotifyPlayer{
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.params.access_token}`
             },
+        }).then((data) => {
+            if(data.ok && !this.stateHandler.getState()){
+                this.stateHandler.toggle();
+            }
+            else if(data.ok){
+                fetchSpotifyAPI(`https://api.spotify.com/v1/audio-analysis/${id}`, this.params.access_token).then((analysis) => {
+                    this.stateHandler.updateDifficulty(analysis.track.tempo)
+                })
+            }
+        });
+    }
+
+    public pauseSong(): void{
+        this.player.pause().then(() => {
+            this.stateHandler.toggle()
+        });
+    }
+
+    public resumeSong(): void{
+        this.player.resume().then(() => {
+            this.stateHandler.toggle()
         });
     }
 }
