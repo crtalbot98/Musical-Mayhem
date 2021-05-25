@@ -1,24 +1,27 @@
-import triangle from "./triangle.js";
+import square from "./square.js";
+import StateHandler from "../state-handler.js";
 
 export default class ObjectHandler{ //Handler for storing and reusing game objects
 
-    protected ctx: CanvasRenderingContext2D;
-    protected c: HTMLCanvasElement;
-    protected pool: any[]; //Array of unused objects
-    protected objects: any[]; //Array of object currently on screen
+    private ctx: CanvasRenderingContext2D;
+    private c: HTMLCanvasElement;
+    private stateHandler: StateHandler;
+    private pool: any[]; //Array of unused objects
+    private objects: any[]; //Array of object currently on screen
 
-    constructor(ctx: CanvasRenderingContext2D, c: HTMLCanvasElement) {
+    constructor(ctx: CanvasRenderingContext2D, c: HTMLCanvasElement, state: StateHandler) {
+        this.stateHandler = state;
         this.ctx = ctx;
         this.c = c;
         this.pool = this.fillPool();
-        this. objects = []
+        this.objects = [];
     }
 
     public addToPool(object: any): void{ //Remove an item from object array and add to the pool
         const i = this.objects.indexOf(object);
         if(i !== -1){
             this.objects.splice(i, 1);
-            this.pool.push(object)
+            this.pool.push(object);
         }
     }
 
@@ -29,6 +32,7 @@ export default class ObjectHandler{ //Handler for storing and reusing game objec
         obj.movementHandler.resetBounds();
         obj.generateRandomColor();
         obj.setOnscreen();
+        obj.updateSize();
 
         this.objects.push(obj)
     }
@@ -48,7 +52,7 @@ export default class ObjectHandler{ //Handler for storing and reusing game objec
     private fillPool(): any[]{ // Fill pool with the initial objects
         let arr = [];
         for(let i = 0; i <= 10; i++){
-            arr.push(new triangle(this.c))
+            arr.push(new square(this.c, this.stateHandler))
         }
         return arr
     }
@@ -56,7 +60,7 @@ export default class ObjectHandler{ //Handler for storing and reusing game objec
     public updateByFrame(): void{
         for(let i = 0; i < this.getObjects().length; i++){ // Update object handler based on object positions / state
             if(!this.getObjects()[i].getState()){
-                this.addToPool(this.getObjects()[i])
+                this.addToPool(this.getObjects()[i]);
             }
             else{
                 this.getObjects()[i].updatePos()
