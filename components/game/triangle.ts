@@ -1,9 +1,10 @@
 import Obstacle from "./obstacle.js";
+import StateHandler from "../state-handler.js";
 
 export default class Triangle extends Obstacle{
 
-    constructor(c: HTMLCanvasElement) {
-        super(c, {w: 50, h: 50});
+    constructor(c: HTMLCanvasElement, state: StateHandler) {
+        super(c, state);
     }
 
     create(ctx: CanvasRenderingContext2D): void{ // Draws a triangle to the scene
@@ -16,6 +17,7 @@ export default class Triangle extends Obstacle{
             // Create bounds for left-side triangle
             bounds.p3 = {x: bounds.p1.x, y: bounds.p1.y - this.size.h*2};
             this.movementHandler.updateBounds(bounds);
+            bounds = this.movementHandler.getBounds();
 
             // Draw triangle to canvas
             ctx.moveTo(bounds.p1.x, bounds.p2.y);
@@ -26,6 +28,7 @@ export default class Triangle extends Obstacle{
             // Create bounds for right-side triangle
             bounds.p3 = {x: bounds.p1.x + this.size.w, y: bounds.p1.y + this.size.h};
             this.movementHandler.updateBounds(bounds);
+            bounds = this.movementHandler.getBounds();
 
             // Draw triangle to canvas
             ctx.moveTo(bounds.p1.x, bounds.p1.y);

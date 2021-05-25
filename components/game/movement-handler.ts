@@ -1,5 +1,6 @@
-import {Size, Bounds, Bound} from "./types";
+import {Size, Bounds, Bound} from "../types";
 import {checkSide} from "../helpers.js";
+import StateHandler from "../state-handler.js";
 
 export default class MovementHandler{// Handles the movement of objects on the x and y axis
 
@@ -7,31 +8,35 @@ export default class MovementHandler{// Handles the movement of objects on the x
     protected size: Size;
     protected bounds: any;
     protected side: string;
+    protected stateHandler: StateHandler;
 
-    constructor(c: HTMLCanvasElement, size: Size) {
+    constructor(c: HTMLCanvasElement, size: Size, state: StateHandler) {
         this.c = c;
         this.size = size;
         this.bounds = this.generateRandomSide();
+        this.stateHandler = state;
     }
 
     updateYPos(): void{ // Move an object; left of center moves down and right of center moves up
+        const s = this.stateHandler.getDifficulty();
         for(let p in this.bounds){
             if(this.bounds[p].x >= this.c.offsetWidth/2 - this.size.w/2){
-                this.bounds[p].y -= 2;
+                this.bounds[p].y -= s;
             }
             else if(this.bounds[p].x <= this.c.offsetWidth/2 + this.size.w/2){
-                this.bounds[p].y += 2;
+                this.bounds[p].y += s;
             }
         }
     }
 
     public updateXPos(): void{ // Move and object; can on move back to the other side of past other center
+        const s = this.stateHandler.getDifficulty();
         for(let p in this.bounds) {
             if(this.side === 'left' && this.bounds[p].x >= this.c.offsetWidth * 0.2) {
-                this.bounds[p].x -= 4
+                this.bounds[p].x -= s * 2
             }
             else if(this.side === 'right' && this.bounds[p].x <= this.c.offsetWidth - this.c.offsetWidth * 0.2 - this.size.w) {
-                this.bounds[p].x += 4;
+                this.bounds[p].x += s * 2;
             }
         }
     }

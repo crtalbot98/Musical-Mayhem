@@ -1,6 +1,7 @@
-import {Size} from "./types.js";
+import {Size} from "../types.js";
 import MovementHandler from "./movement-handler.js";
 import PlayerCollisionHandler from "./player-collision-handler.js";
+import StateHandler from "../state-handler.js";
 
 export default class Player{
 
@@ -11,19 +12,16 @@ export default class Player{
     public collisionHandler: PlayerCollisionHandler;
     public isAlive: boolean;
 
-    constructor(c: HTMLCanvasElement) {
+    constructor(c: HTMLCanvasElement, stateHandler: StateHandler) {
         this.c = c;
         this.speed = 2;
         this.size = {
             w: this.c.offsetWidth/8,
             h: this.c.offsetHeight/8
         };
-        this.movementHandler = new MovementHandler(c, this.size);
+        this.movementHandler = new MovementHandler(c, this.size, stateHandler);
         this.collisionHandler = new PlayerCollisionHandler(this.c, this.size);
         this.isAlive = true
-        // window.setInterval(() => {
-        //     console.log(this.movementHandler.getBounds())
-        // }, 800)
     }
 
     public create(ctx: CanvasRenderingContext2D): void{ // Draws the player to the canvas
@@ -49,16 +47,16 @@ export default class Player{
     }
 
     public updatePos(obstacles: any[]): void{ // Updates the players position or resets it if out of bounds
-        if((!this.collisionHandler.withinPlayer(obstacles, this.movementHandler.getBounds()) && this.collisionHandler.withinCanvas(this.movementHandler.getBounds())) && this.isAlive){
+        if((!this.collisionHandler.withinPlayer(obstacles, this.movementHandler.getBounds(), this.movementHandler.getSide()) && this.collisionHandler.withinCanvas(this.movementHandler.getBounds())) && this.isAlive){
             this.movementHandler.updateXPos();
             this.movementHandler.updateYPos();
         }
         else{
             this.isAlive = false;
-            window.setTimeout(() => { //Player dead
+            window.setTimeout(() => {
                 if(!this.isAlive) this.movementHandler.resetBounds();
                 this.isAlive = true
-            }, 1000);
+            }, 500)
         }
     }
 }

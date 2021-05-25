@@ -9,7 +9,7 @@ export default class GameBorder{
     }
 
     public create(): void{
-        this.ctx.fillStyle = 'black';
+        this.ctx.fillStyle = 'rgb(20, 20, 20)';
         this.ctx.fillRect(0,0,this.c.offsetWidth * 0.2, this.c.height);
         this.ctx.fillRect(this.c.offsetWidth-this.c.offsetWidth * 0.2,0,this.c.offsetWidth * 0.2, this.c.height);
     }

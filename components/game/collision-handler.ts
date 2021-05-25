@@ -1,4 +1,4 @@
-import {Bounds} from "./types.js";
+import {Bounds} from "../types.js";
 
 export default class CollisionHandler{
 
