@@ -1,19 +1,27 @@
 export default class StateHandler{
 
-    private state: string;
-    private states: string[];
+    private state: boolean;
+    private difficulty: number;
 
     constructor() {
-        this.states = ['paused', 'play'];
-        this.state = this.states[0];
+        this.state = false;
+        this.difficulty = 2
     }
 
-    public updateState(state: string): void{
-        const i = this.states.indexOf(state);
-        if(i !== -1) this.state = this.states[i]
+    public toggle(): void{
+        this.state = !this.state
     }
 
-    public getState(): string{
+    public getState(): boolean{
         return this.state
+    }
+
+    public updateDifficulty(num: number): void{
+        this.difficulty = num/25;
+        console.log(this.difficulty)
+    }
+
+    public getDifficulty(): number{
+        return this.difficulty
     }
 }
