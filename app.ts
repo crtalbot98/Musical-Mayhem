@@ -1,9 +1,9 @@
 import Game from "./components/game/game.js";
 import SpotifyPlayer from "./components/spotify/spotify-player.js";
 import SpotifyUI from "./components/spotify/spotify-ui.js";
-import {Params} from "./components/game/types.js";
+import {Params} from "./components/types.js";
 import StateHandler from "./components/state-handler.js";
-import {checkParams} from "./components/helpers.js";
+import {checkParams, updateVisibility} from "./components/helpers.js";
 
 declare global {
     const Spotify: any;
@@ -32,12 +32,11 @@ declare global {
     window.onSpotifyWebPlaybackSDKReady = () => {
         if(checkParams(params)){
             player.initSpotifyPlayer();
-            spotify.updatePlaylists();
+            spotify.init();
         }
     };
 
-    if(state.getState() === 'paused') game.loop();
-
+    game.loop();
     game.initControls()
 })();
 
@@ -56,17 +55,6 @@ function initEventListeners(canvas: HTMLCanvasElement): void{
 function initCanvas(canvas: HTMLCanvasElement): void{
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight * .8;
-}
-
-function updateVisibility(): void{
-    const displayNone = Array.from(document.querySelectorAll('.flex'));
-    const flex = Array.from(document.querySelectorAll('.display-none'));
-    const elements = displayNone.concat(flex);
-
-    for(let i = 0; i < elements.length; i++){
-        if(elements[i].classList.contains('display-none')) elements[i].classList.replace('display-none', 'flex');
-        else if(elements[i].classList.contains('flex')) elements[i].classList.replace('flex', 'display-none');
-    }
 }
 
 function hashParams(): Params{ // get url params for user data
