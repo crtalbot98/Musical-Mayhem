@@ -135,19 +135,29 @@ canvas{
 
 .list{
     overflow-y: scroll;
-    height: 100%;
     font-size: 0.9em;
     box-sizing: border-box;
     padding: 0 0.5em 0.5em 0;
+    background-color: var(--dark-black2);
 }
+
+#playlists{
+    top: 0;
+    left: 0;
+}
+
+#tracks{
+    top: 0;
+    right: 0;
+}
+
+/*.list div{*/
+/*    margin-top: 0.5em;*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*}*/
 
 .list div{
-    margin-top: 0.5em;
-    display: flex;
-    flex-direction: row;
-}
-
-.list div div{
     display: flex;
     flex-direction: column;
 }
@@ -168,9 +178,9 @@ canvas{
 }
 
 .fixed-border{
-    height: 75%;
-    width: 20%;
     position: fixed;
+    height: 80%;
+    width: 50%;
 }
 
 @media screen and (min-width: 1300px){
@@ -178,14 +188,7 @@ canvas{
         padding: 1em 0 0 0.5em;
     }
 
-    #playlists{
-        top: 0;
-        left: 0;
+    .fixed-border{
+        width: 20%;
     }
-
-    #tracks{
-        top: 0;
-        right: 0;
-    }
-
 }
