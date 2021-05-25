@@ -18,28 +18,29 @@ export default class Game{
     constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, state: StateHandler) {
         this.c = canvas;
         this.ctx = ctx;
-        this.objectHandler = new ObjectHandler(this.ctx, this.c);
-        this.player = new Player(this.c);
-        this.gameBorder = new GameBorder(this.ctx, this.c);
         this.stateHandler = state;
+        this.objectHandler = new ObjectHandler(this.ctx, this.c, state);
+        this.player = new Player(this.c, state);
+        this.gameBorder = new GameBorder(this.ctx, this.c);
         window.setInterval(() => {
-            this.objectHandler.addToObjects()
-        }, 1200)
+            if(this.stateHandler.getState()) this.objectHandler.addToObjects()
+        }, 1000);
     }
 
     protected update(frame: number): void{ // Updates data for objects and scene
-        this.player.updatePos(this.objectHandler.getObjects());
-        this.objectHandler.updateByFrame();
+        if(this.stateHandler.getState()){
+            this.player.updatePos(this.objectHandler.getObjects());
+            this.objectHandler.updateByFrame()
+        }
     }
 
     protected draw(): void{ // Draws the scene every frame
-        this.ctx.clearRect(0, 0, this.c.width, this.c.height); // Clears game scene
-
+        if(this.stateHandler.getState()){
+            this.ctx.clearRect(0, 0, this.c.width, this.c.height); // Clears game scene
+            this.player.create(this.ctx); // player
+            this.objectHandler.createByFrame() // All objects in object array
+        }
         this.gameBorder.create(); // border for the game area
-
-        this.player.create(this.ctx); // player
-
-        this.objectHandler.createByFrame() // All objects in object array
     }
 
     public loop(): void{ // Creates the animation loop
