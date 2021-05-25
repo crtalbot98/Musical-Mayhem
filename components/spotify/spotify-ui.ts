@@ -6,18 +6,18 @@ import PlayBtn from "./play-btn.js";
 
 export default class SpotifyUI{
 
-    private stateHandler: StateHandler;
-    private player: SpotifyPlayer;
-    private playlists: Playlists;
-    private params: Params;
-    private playBtn: PlayBtn;
+    private _stateHandler: StateHandler;
+    private _player: SpotifyPlayer;
+    private _playlists: Playlists;
+    private _params: Params;
+    private _playBtn: PlayBtn;
 
     constructor(params: Params, state: StateHandler) {
-        this.params = params;
-        this.stateHandler = state;
-        this.player = new SpotifyPlayer(params, state);
-        this.playlists = new Playlists(params, this.player);
-        this.playBtn = new PlayBtn(state, this.player)
+        this._params = params;
+        this._stateHandler = state;
+        this._player = new SpotifyPlayer(params, state);
+        this._playlists = new Playlists(params, this._player);
+        this._playBtn = new PlayBtn(state, this._player)
     }
 
     public loginWarning(): void{
@@ -27,12 +27,12 @@ export default class SpotifyUI{
         content.append(p)
     }
 
-    public getPlayer(): SpotifyPlayer{
-        return this.player
+    public init(): void{
+        this._playlists.updatePlaylists();
+        this._playBtn.create()
     }
 
-    public init(): void{
-        this.playlists.updatePlaylists();
-        this.playBtn.create()
+    public get player(): SpotifyPlayer{
+        return this._player
     }
 }

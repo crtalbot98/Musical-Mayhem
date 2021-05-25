@@ -24,7 +24,7 @@ declare global {
     const game = new Game(canvas, ctx, state);
     const params = hashParams();
     const spotify = new SpotifyUI(params, state);
-    const player = spotify.getPlayer();
+    const player = spotify.player;
 
     if(checkParams(params)) updateVisibility();
     else spotify.loginWarning();

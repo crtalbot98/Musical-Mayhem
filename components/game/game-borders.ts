@@ -1,16 +1,16 @@
 export default class GameBorder{
 
-    private ctx: CanvasRenderingContext2D;
-    private c: HTMLCanvasElement;
+    private _ctx: CanvasRenderingContext2D;
+    private _c: HTMLCanvasElement;
 
     constructor(ctx: CanvasRenderingContext2D, c: HTMLCanvasElement) {
-        this.ctx = ctx;
-        this.c = c
+        this._ctx = ctx;
+        this._c = c
     }
 
     public create(): void{
-        this.ctx.fillStyle = 'rgb(20, 20, 20)';
-        this.ctx.fillRect(0,0,this.c.offsetWidth * 0.2, this.c.height);
-        this.ctx.fillRect(this.c.offsetWidth-this.c.offsetWidth * 0.2,0,this.c.offsetWidth * 0.2, this.c.height);
+        this._ctx.fillStyle = 'rgb(20, 20, 20)';
+        this._ctx.fillRect(0,0,this._c.offsetWidth * 0.2, this._c.height);
+        this._ctx.fillRect(this._c.offsetWidth-this._c.offsetWidth * 0.2,0,this._c.offsetWidth * 0.2, this._c.height);
     }
 }

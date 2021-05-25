@@ -4,31 +4,31 @@ import SpotifyPlayer from "./spotify-player.js";
 
 export default class Tracks{
 
-    private currentPlaylistTracks: any[];
-    private currentSong: string;
-    private params: Params;
-    private nextTrackList: string;
-    private player: SpotifyPlayer;
+    private _currentPlaylistTracks: any[];
+    private _currentSong: string;
+    private _params: Params;
+    private _nextTrackList: string;
+    private _player: SpotifyPlayer;
 
     constructor(params: Params, player: SpotifyPlayer){
-        this.params = params;
-        this.player = player
+        this._params = params;
+        this._player = player
     }
 
-    public updatePlaylistTracks(url: string): void{
-        fetchSpotifyAPI(url, this.params.access_token).then((data: any) => {
-            this.currentPlaylistTracks = data.items;
-            this.nextTrackList = data.next;
+    public updatePlaylistTracks(url: string): void{ // fetch playlist tracks from Spotify API
+        fetchSpotifyAPI(url, this._params.access_token).then((data: any) => {
+            this._currentPlaylistTracks = data.items;
+            this._nextTrackList = data.next;
             this.updateNextVisibility();
             this.addTracksToDOM()
         });
     }
 
-    private addTracksToDOM(): void{
+    private addTracksToDOM(): void{ // Add tracks to the DOM
         const list = document.querySelector('#tracks .list');
         const next = document.querySelector('#next');
 
-        this.currentPlaylistTracks.forEach((data: any) => {
+        this._currentPlaylistTracks.forEach((data: any) => {
             const cont = document.createElement('div');
             const img = document.createElement('img');
             const name = document.createElement('p');
@@ -46,30 +46,30 @@ export default class Tracks{
             list.append(cont);
 
             cont.addEventListener('click', () => {
-                this.currentSong = data.track.uri;
-                this.player.playSong(this.currentSong, data.track.id)
+                this._currentSong = data.track.uri;
+                this._player.playSong(this._currentSong, data.track.id)
             });
         });
 
         next.addEventListener('click', () => {
-            this.updatePlaylistTracks(this.nextTrackList)
+            this.updatePlaylistTracks(this._nextTrackList)
         });
     }
 
     private updateNextVisibility(): void{
         const next = document.querySelector('#next');
-        if(this.nextTrackList) next.classList.replace('hidden', 'visible');
+        if(this._nextTrackList) next.classList.replace('hidden', 'visible');
     }
 
-    public getNextTrackList(): string{
-        return this.nextTrackList
+    public get nextTrackList(): string{
+        return this._nextTrackList
     }
 
-    public getCurrentTracks(): any[]{
-        return this.currentPlaylistTracks
+    public get currentTracks(): any[]{
+        return this._currentPlaylistTracks
     }
 
-    public getCurrentSong(): string{
-        return this.currentSong
+    public get currentSong(): string{
+        return this._currentSong
     }
 }

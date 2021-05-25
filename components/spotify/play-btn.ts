@@ -3,12 +3,12 @@ import SpotifyPlayer from "./spotify-player.js";
 
 export default class PlayBtn{
 
-    private stateHandler: StateHandler;
-    private player: SpotifyPlayer;
+    private _stateHandler: StateHandler;
+    private _player: SpotifyPlayer;
 
     constructor(state: StateHandler, player: SpotifyPlayer) {
-        this.stateHandler = state;
-        this.player = player
+        this._stateHandler = state;
+        this._player = player
     }
 
     public create(): void{
@@ -18,8 +18,8 @@ export default class PlayBtn{
         document.querySelector('.content').append(btn);
 
         btn.addEventListener('click', () => {
-            btn.textContent = this.stateHandler.getState() ? 'Play' : 'Paused';
-            this.stateHandler.getState() ? this.player.pauseSong() : this.player.resumeSong()
+            btn.textContent = this._stateHandler.state ? 'Play' : 'Paused';
+            this._stateHandler.state ? this._player.pauseSong() : this._player.resumeSong()
         })
     }
 }

@@ -5,58 +5,60 @@ import StateHandler from "../state-handler.js";
 
 export default class Player{
 
-    protected speed: number;
-    protected c: HTMLCanvasElement;
-    protected size: Size;
-    public movementHandler: MovementHandler;
-    public collisionHandler: PlayerCollisionHandler;
-    public isAlive: boolean;
+    protected _c: HTMLCanvasElement;
+    protected _size: Size;
+    public _movementHandler: MovementHandler;
+    public _collisionHandler: PlayerCollisionHandler;
+    public _isAlive: boolean;
 
-    constructor(c: HTMLCanvasElement, stateHandler: StateHandler) {
-        this.c = c;
-        this.speed = 2;
-        this.size = {
-            w: this.c.offsetWidth/8,
-            h: this.c.offsetHeight/8
+    constructor(c: HTMLCanvasElement, state: StateHandler) {
+        this._c = c;
+        this._size = {
+            w: this._c.offsetWidth/8,
+            h: this._c.offsetHeight/8
         };
-        this.movementHandler = new MovementHandler(c, this.size, stateHandler);
-        this.collisionHandler = new PlayerCollisionHandler(this.c, this.size);
-        this.isAlive = true
+        this._movementHandler = new MovementHandler(c, this._size, state);
+        this._collisionHandler = new PlayerCollisionHandler(this._c, this._size);
+        this._isAlive = true
     }
 
     public create(ctx: CanvasRenderingContext2D): void{ // Draws the player to the canvas
-        const bounds = this.movementHandler.getBounds();
+        const bounds = this._movementHandler.bounds;
 
         this.updateSize();
-        bounds.tr = {x: bounds.p1.x + this.size.w, y: bounds.p1.y};
-        bounds.bl = {x: bounds.p1.x, y: bounds.p1.y + this.size.h};
-        bounds.br = {x: bounds.p1.x + this.size.w, y: bounds.p1.y + this.size.h};
-        this.movementHandler.updateBounds(bounds);
+        bounds.tr = {x: bounds.p1.x + this._size.w, y: bounds.p1.y};
+        bounds.bl = {x: bounds.p1.x, y: bounds.p1.y + this._size.h};
+        bounds.br = {x: bounds.p1.x + this._size.w, y: bounds.p1.y + this._size.h};
+        this._movementHandler.bounds = bounds;
 
         ctx.fillStyle = "#ff2c50";
-        ctx.fillRect(this.movementHandler.getBounds().p1.x, this.movementHandler.getBounds().p1.y, this.size.w, this.size.h)
+        ctx.fillRect(this._movementHandler.bounds.p1.x, this._movementHandler.bounds.p1.y, this._size.w, this._size.h)
     }
 
     private updateSize(): void{ // Updates the size of the player if the window is resized
-        this.size.w = this.c.offsetWidth/8;
-        this.size.h = this.c.offsetHeight/8
-    }
-
-    public getSize(): Size{ // Returns size of the player
-        return this.size
+        this._size.w = this._c.offsetWidth/8;
+        this._size.h = this._c.offsetHeight/8
     }
 
     public updatePos(obstacles: any[]): void{ // Updates the players position or resets it if out of bounds
-        if((!this.collisionHandler.withinPlayer(obstacles, this.movementHandler.getBounds(), this.movementHandler.getSide()) && this.collisionHandler.withinCanvas(this.movementHandler.getBounds())) && this.isAlive){
-            this.movementHandler.updateXPos();
-            this.movementHandler.updateYPos();
+        if((!this._collisionHandler.withinPlayer(obstacles, this._movementHandler.bounds, this._movementHandler.side) && this._collisionHandler.withinCanvas(this._movementHandler.bounds)) && this._isAlive){
+            this._movementHandler.updateXPos();
+            this._movementHandler.updateYPos();
         }
         else{
-            this.isAlive = false;
+            this._isAlive = false;
             window.setTimeout(() => {
-                if(!this.isAlive) this.movementHandler.resetBounds();
-                this.isAlive = true
+                if(!this._isAlive) this._movementHandler.resetBounds();
+                this._isAlive = true
             }, 500)
         }
+    }
+
+    public get size(): Size{ // Returns size of the player
+        return this._size
+    }
+
+    public get isAlive(): boolean{
+        return this._isAlive
     }
 }

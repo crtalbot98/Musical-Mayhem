@@ -1,27 +1,30 @@
 export default class StateHandler{
 
-    private state: boolean;
-    private difficulty: number;
+    private _state: boolean;
+    private _difficulty: number;
 
     constructor() {
-        this.state = false;
-        this.difficulty = 2
+        this._state = false;
+        this._difficulty = 2
     }
 
     public toggle(): void{
-        this.state = !this.state
+        this._state = !this._state
     }
 
-    public getState(): boolean{
-        return this.state
+    public get state(): boolean{
+        return this._state
     }
 
-    public updateDifficulty(num: number): void{
-        this.difficulty = num/25;
-        console.log(this.difficulty)
+    public set state(s: boolean){
+        this._state = s
     }
 
-    public getDifficulty(): number{
-        return this.difficulty
+    public set difficulty(num: number){
+        this._difficulty = num/25
+    }
+
+    public get difficulty(): number{
+        return this._difficulty
     }
 }

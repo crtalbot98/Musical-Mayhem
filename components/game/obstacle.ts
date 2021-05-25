@@ -6,31 +6,31 @@ import {randBetweenTwoVal} from "../helpers.js";
 
 export default class Obstacle{
 
-    protected movementHandler: MovementHandler;
-    protected collisionHandler: CollisionHandler;
-    protected c: HTMLCanvasElement;
-    protected size: Size;
-    protected onScreen: boolean;
-    protected color: string;
-    protected ctx: CanvasRenderingContext2D;
+    protected _movementHandler: MovementHandler;
+    protected _collisionHandler: CollisionHandler;
+    protected _c: HTMLCanvasElement;
+    protected _size: Size;
+    protected _onScreen: boolean;
+    protected _color: string;
+    protected _ctx: CanvasRenderingContext2D;
 
     constructor(c: HTMLCanvasElement, state: StateHandler) {
-        this.c = c;
-        this.ctx = c.getContext('2d');
-        this.size = {w: randBetweenTwoVal(50, this.c.offsetHeight/8), h: randBetweenTwoVal(50, this.c.offsetHeight/8)};
-        this.movementHandler = new MovementHandler(c, this.size, state);
-        this.collisionHandler = new CollisionHandler(this.c);
-        this.onScreen = true;
-        this.color = this.generateRandomColor()
+        this._c = c;
+        this._ctx = c.getContext('2d');
+        this._size = {w: randBetweenTwoVal(50, this._c.offsetHeight/8), h: randBetweenTwoVal(50, this._c.offsetHeight/8)};
+        this._movementHandler = new MovementHandler(c, this._size, state);
+        this._collisionHandler = new CollisionHandler(this._c);
+        this._onScreen = true;
+        this._color = this.generateRandomColor()
     }
 
     public updatePos(): void{
-        if(this.collisionHandler.withinCanvas(this.movementHandler.getBounds())){
-            this.movementHandler.updateYPos();
-            this.movementHandler.updateXPos();
+        if(this._collisionHandler.withinCanvas(this._movementHandler.bounds)){
+            this._movementHandler.updateYPos();
+            this._movementHandler.updateXPos();
         }
         else{
-            this.onScreen = false
+            this._onScreen = false
         }
     }
 
@@ -39,19 +39,19 @@ export default class Obstacle{
         return `rgb(${r}, ${r}, ${r})`
     }
 
-    public updateSize(): void{
-        this.size = {w: randBetweenTwoVal(50, this.c.offsetWidth*0.2), h: randBetweenTwoVal(50, this.c.offsetHeight*0.15)}
+    public set size(s: Size){
+        this._size = s
     }
 
-    public getState(): boolean{
-        return this.onScreen
+    public get size(): Size{
+        return this._size
     }
 
-    public setOnscreen(){
-        this.onScreen = true
+    public get onScreen(): boolean{
+        return this._onScreen
     }
 
-    public getSize(): Size{
-        return this.size
+    public set onScreen(visible: boolean){
+        this._onScreen = visible
     }
 }

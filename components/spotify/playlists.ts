@@ -5,24 +5,24 @@ import SpotifyPlayer from "./spotify-player.js";
 
 export default class Playlists{
 
-    private playlists: any[];
-    private params: Params;
-    private currentPlayListName: string;
-    private tracks: Tracks;
+    private _playlists: any[];
+    private _params: Params;
+    private _currentPlayListName: string;
+    private _tracks: Tracks;
 
     constructor(params: Params, player: SpotifyPlayer) { //make content invisible on mobile
-        this.params = params;
-        this.tracks = new Tracks(params, player);
+        this._params = params;
+        this._tracks = new Tracks(params, player);
     }
 
-    public updatePlaylists(): void{
-        fetchSpotifyAPI('https://api.spotify.com/v1/me/playlists', this.params.access_token).then((data: any) => {
-            this.playlists = data.items;
+    public updatePlaylists(): void{ // Fetch the user's playlists from Spotify API
+        fetchSpotifyAPI('https://api.spotify.com/v1/me/playlists', this._params.access_token).then((data: any) => {
+            this._playlists = data.items;
             this.addPlayListsToDOM()
         });
     }
 
-    private addPlayListsToDOM(): void{
+    private addPlayListsToDOM(): void{ // Add the playlists to the DOM
         const list = document.querySelector('#playlists');
         const cont = document.createElement('div');
         const title = document.createElement('h4');
@@ -30,7 +30,7 @@ export default class Playlists{
         cont.classList.add('list', 'fixed-border');
         cont.append(title);
 
-        this.playlists.forEach((data: any) => {
+        this._playlists.forEach((data: any) => {
             const cont = document.createElement('div');
             const img = document.createElement('img');
             const name = document.createElement('p');
@@ -43,20 +43,24 @@ export default class Playlists{
             list.append(cont);
 
             cont.addEventListener('click',() => {
-                this.currentPlayListName = data.name;
+                this._currentPlayListName = data.name;
                 this.emptyTracks();
-                this.tracks.updatePlaylistTracks(data.tracks.href)
+                this._tracks.updatePlaylistTracks(data.tracks.href)
             })
         })
     }
 
-    private emptyTracks(): void{
+    private emptyTracks(): void{ // Remove tracks from the DOM
         const list = document.querySelector('#tracks div');
-        document.querySelector('#tracks h4').textContent = this.currentPlayListName || 'Playlist Tracks';
+        document.querySelector('#tracks h4').textContent = this._currentPlayListName || 'Playlist Tracks';
         if(list) list.innerHTML = ''
     }
 
-    public getPlaylists(): any[]{
-        return this.playlists
+    public get playlists(): any[]{
+        return this._playlists
+    }
+
+    public get currentPlaylistName(): string{
+        return this._currentPlayListName
     }
 }

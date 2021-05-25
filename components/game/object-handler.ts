@@ -1,76 +1,77 @@
 import square from "./square.js";
 import StateHandler from "../state-handler.js";
+import {randBetweenTwoVal} from "../helpers.js";
 
 export default class ObjectHandler{ //Handler for storing and reusing game objects
 
-    private ctx: CanvasRenderingContext2D;
-    private c: HTMLCanvasElement;
-    private stateHandler: StateHandler;
-    private pool: any[]; //Array of unused objects
-    private objects: any[]; //Array of object currently on screen
+    private _ctx: CanvasRenderingContext2D;
+    private _c: HTMLCanvasElement;
+    private _stateHandler: StateHandler;
+    private _pool: any[]; //Array of unused objects
+    private _objects: any[]; //Array of object currently on screen
 
     constructor(ctx: CanvasRenderingContext2D, c: HTMLCanvasElement, state: StateHandler) {
-        this.stateHandler = state;
-        this.ctx = ctx;
-        this.c = c;
-        this.pool = this.fillPool();
-        this.objects = [];
+        this._stateHandler = state;
+        this._ctx = ctx;
+        this._c = c;
+        this._pool = this.fillPool();
+        this._objects = [];
     }
 
     public addToPool(object: any): void{ //Remove an item from object array and add to the pool
-        const i = this.objects.indexOf(object);
+        const i = this._objects.indexOf(object);
         if(i !== -1){
-            this.objects.splice(i, 1);
-            this.pool.push(object);
+            this._objects.splice(i, 1);
+            this._pool.push(object);
         }
     }
 
     public addToObjects(): void{ //Remove from the pool and add to the object array
-        if(this.pool.length < 1) return;
-        let obj = this.pool.pop();
+        if(this._pool.length < 1) return;
+        let obj = this._pool.pop();
 
         obj.movementHandler.resetBounds();
         obj.generateRandomColor();
-        obj.setOnscreen();
-        obj.updateSize();
+        obj.onscreen = true;
+        obj.size = {w: randBetweenTwoVal(50, this._c.offsetWidth*0.2), h: randBetweenTwoVal(50, this._c.offsetHeight*0.15)};
 
-        this.objects.push(obj)
+        this._objects.push(obj)
     }
 
     public emptyPool(): void{ //Empty the pool
-        this.pool = []
+        this._pool = []
     }
 
     public emptyObjects(): void{ // Empty the object array
-        this.objects = []
-    }
-
-    public getObjects(): any[]{ // Get all the object array
-        return this.objects
+        this._objects = []
     }
 
     private fillPool(): any[]{ // Fill pool with the initial objects
         let arr = [];
         for(let i = 0; i <= 10; i++){
-            arr.push(new square(this.c, this.stateHandler))
+            arr.push(new square(this._c, this._stateHandler))
         }
         return arr
     }
 
     public updateByFrame(): void{
-        for(let i = 0; i < this.getObjects().length; i++){ // Update object handler based on object positions / state
-            if(!this.getObjects()[i].getState()){
-                this.addToPool(this.getObjects()[i]);
+        for(let i = 0; i < this._objects.length; i++){ // Update object handler based on object positions / state
+            if(!this._objects[i].getState()){
+                this.addToPool(this._objects[i]);
             }
             else{
-                this.getObjects()[i].updatePos()
+                this._objects[i].updatePos()
             }
         }
     }
 
     public createByFrame(){ // create each object every frame
-        for(let i = 0; i < this.getObjects().length; i++){
-            this.getObjects()[i].create(this.ctx);
+        for(let i = 0; i < this._objects.length; i++){
+            this._objects[i].create(this._ctx);
         }
+    }
+
+    public get objects(): any[]{ // Get all the object array
+        return this._objects
     }
 }
