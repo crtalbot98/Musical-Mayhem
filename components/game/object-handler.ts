@@ -30,10 +30,10 @@ export default class ObjectHandler{ //Handler for storing and reusing game objec
         if(this._pool.length < 1) return;
         let obj = this._pool.pop();
 
-        obj.movementHandler.resetBounds();
+        obj._movementHandler.resetBounds();
         obj.generateRandomColor();
-        obj.onscreen = true;
-        obj.size = {w: randBetweenTwoVal(50, this._c.offsetWidth*0.2), h: randBetweenTwoVal(50, this._c.offsetHeight*0.15)};
+        obj._onscreen = true;
+        obj._size = {w: randBetweenTwoVal(50, this._c.offsetWidth*0.2), h: randBetweenTwoVal(50, this._c.offsetHeight*0.15)};
 
         this._objects.push(obj)
     }
@@ -56,7 +56,7 @@ export default class ObjectHandler{ //Handler for storing and reusing game objec
 
     public updateByFrame(): void{
         for(let i = 0; i < this._objects.length; i++){ // Update object handler based on object positions / state
-            if(!this._objects[i].getState()){
+            if(!this._objects[i].onScreen){
                 this.addToPool(this._objects[i]);
             }
             else{
