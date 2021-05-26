@@ -13,8 +13,8 @@ class PlayerCollisionHandler extends CollisionHandler{
     public withinPlayer(obstacles: any[], pBounds: Bounds, playerSide: string): boolean{ // Check if obstacles are within the player rect
         if(!pBounds.tr || !pBounds.bl || !pBounds.br) return false;
         for(let i = 0; i < obstacles.length; i++){
-            const oBounds = obstacles[i].movementHandler.bounds;
-            if(playerSide === obstacles[i].movementHandler.getSide()){
+            const oBounds = obstacles[i]._movementHandler.bounds;
+            if(playerSide === obstacles[i]._movementHandler.side){
                 for(let p in oBounds) {
                     const ab = this.vector(pBounds.br, pBounds.bl);
                     const am = this.vector(pBounds.br, oBounds[p]);
