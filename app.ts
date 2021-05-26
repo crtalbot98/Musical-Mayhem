@@ -1,5 +1,4 @@
 import Game from "./components/game/game.js";
-import SpotifyPlayer from "./components/spotify/spotify-player.js";
 import SpotifyUI from "./components/spotify/spotify-ui.js";
 import {Params} from "./components/types.js";
 import StateHandler from "./components/state-handler.js";
@@ -16,11 +15,11 @@ declare global {
 
     const canvas = document.querySelector('canvas');
     const ctx = canvas.getContext('2d');
+    const state = new StateHandler();
 
     initCanvas(canvas);
-    initEventListeners(canvas);
+    initEventListeners(canvas, state);
 
-    const state = new StateHandler();
     const game = new Game(canvas, ctx, state);
     const params = hashParams();
     const spotify = new SpotifyUI(params, state);
@@ -40,10 +39,11 @@ declare global {
     game.initControls()
 })();
 
-function initEventListeners(canvas: HTMLCanvasElement): void{
+function initEventListeners(canvas: HTMLCanvasElement, stateHandler: StateHandler): void{
     const noSpotify = document.querySelector("#no-spotify");
 
     noSpotify.addEventListener('click', () => {
+        stateHandler.state = true;
         updateVisibility()
     });
 
