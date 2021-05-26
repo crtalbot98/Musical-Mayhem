@@ -41,7 +41,9 @@ export default class Player{
     }
 
     public updatePos(obstacles: any[]): void{ // Updates the players position or resets it if out of bounds
-        if((!this._collisionHandler.withinPlayer(obstacles, this._movementHandler.bounds, this._movementHandler.side) && this._collisionHandler.withinCanvas(this._movementHandler.bounds)) && this._isAlive){
+        const playerCollision = this._collisionHandler.withinPlayer(obstacles, this._movementHandler.bounds, this._movementHandler.side);
+        const withinCanvas = this._collisionHandler.withinCanvas(this._movementHandler.bounds);
+        if((!playerCollision && withinCanvas) && this._isAlive){
             this._movementHandler.updateXPos();
             this._movementHandler.updateYPos();
         }
