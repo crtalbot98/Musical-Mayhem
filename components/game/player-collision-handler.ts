@@ -1,7 +1,7 @@
 import CollisionHandler from "./collision-handler.js";
-import {Bounds, Size, Bound} from "../types";
+import {Bounds, Size} from "../types";
 
-class PlayerCollisionHandler extends CollisionHandler{
+export default class PlayerCollisionHandler extends CollisionHandler{
 
     private size: Size;
 
@@ -11,37 +11,19 @@ class PlayerCollisionHandler extends CollisionHandler{
     }
 
     public withinPlayer(obstacles: any[], pBounds: Bounds, playerSide: string): boolean{ // Check if obstacles are within the player rect
-        if(!pBounds.tr || !pBounds.bl || !pBounds.br) return false;
+        if(this.checkBoundsExists(pBounds)) return false;
         for(let i = 0; i < obstacles.length; i++){
             const oBounds = obstacles[i]._movementHandler.bounds;
+            if(this.checkBoundsExists(oBounds)) return false;
             if(playerSide === obstacles[i]._movementHandler.side){
-                for(let p in oBounds) {
-                    const ab = this.vector(pBounds.br, pBounds.bl);
-                    const am = this.vector(pBounds.br, oBounds[p]);
-                    const bc = this.vector(pBounds.bl, pBounds.p1);
-                    const bm = this.vector(pBounds.bl, oBounds[p]);
-                    const dotABAM = this.dot(ab, am);
-                    const dotABAB = this.dot(ab, ab);
-                    const dotBCBM = this.dot(bc, bm);
-                    const dotBCBC = this.dot(bc, bc);
-                    if(0 <= dotABAM && dotABAM <= dotABAB && 0 <= dotBCBM && dotBCBM <= dotBCBC)  return true
-                }
-
-                return false
+                if (pBounds.p1.x > oBounds.br.x || oBounds.p1.x > pBounds.br.x) return false; // Checks if player rect touches obstacle horizontally (x-axis)
+                if (pBounds.p1.y > oBounds.br.y || oBounds.p1.y > pBounds.br.y) return false; // Checks if player rect touches obstacle vertically (y-axis)
+                return true
             }
         }
     }
 
-    private vector(p1: Bound, p2: Bound): Bound{
-        return {
-            x: (p2.x - p1.x),
-            y: (p2.y - p1.y)
-        }
-    }
-
-    private dot(u: Bound, v: Bound): number{
-        return u.x * v.x + u.y * v.y
+    private checkBoundsExists(b: Bounds): boolean{
+        return (!b.p1 || !b.tr || !b.bl || !b.br)
     }
 }
-
-export default PlayerCollisionHandler;
