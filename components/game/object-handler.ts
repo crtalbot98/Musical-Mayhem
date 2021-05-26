@@ -15,7 +15,7 @@ export default class ObjectHandler{ //Handler for storing and reusing game objec
         this._ctx = ctx;
         this._c = c;
         this._pool = this.fillPool();
-        this._objects = [];
+        this._objects = []
     }
 
     public addToPool(object: any): void{ //Remove an item from object array and add to the pool
@@ -32,7 +32,7 @@ export default class ObjectHandler{ //Handler for storing and reusing game objec
 
         obj._movementHandler.resetBounds();
         obj.generateRandomColor();
-        obj._onscreen = true;
+        obj._onScreen = true;
         obj._size = {w: randBetweenTwoVal(50, this._c.offsetWidth*0.2), h: randBetweenTwoVal(50, this._c.offsetHeight*0.15)};
 
         this._objects.push(obj)
