@@ -48,3 +48,13 @@ export function updateVisibility(): void{ // replaces elements with display-none
                 else if(elements[i].classList.contains('flex')) elements[i].classList.replace('flex', 'display-none');
         }
 }
+
+export function checkDeviceWidth(): boolean{
+        if(window.innerWidth <= 1300) return true;
+        return false
+}
+
+export function updatePlayBtn(state: boolean): void{
+        const btn = document.querySelector('#play-btn');
+        if(btn) btn.textContent = state ? 'Pause' : 'Play';
+}
