@@ -69,8 +69,6 @@ canvas{
 }
 
 .btn-link{
-    height: 3em;
-    width: 40%;
     text-align: center;
     border-radius: 2em;
     text-decoration: none;
@@ -134,11 +132,14 @@ canvas{
 }
 
 .list{
+    display: flex;
+    flex-direction: column;
     overflow-y: scroll;
     font-size: 0.9em;
     box-sizing: border-box;
+    height: 90%;
     padding: 0 0.5em 0.5em 0;
-    background-color: var(--dark-black2);
+    margin-bottom: 1em;
 }
 
 #playlists{
@@ -151,21 +152,18 @@ canvas{
     right: 0;
 }
 
-/*.list div{*/
-/*    margin-top: 0.5em;*/
-/*    display: flex;*/
-/*    flex-direction: row;*/
-/*}*/
+.list div:first-child{
+    margin-top: 1em;
+}
 
 .list div{
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
+    margin-top: 1em;
 }
 
 .list div p{
     display: inline-block;
     margin-left: 0.5em;
-    /*align-self: flex-end;*/
 }
 
 .list img{
@@ -179,8 +177,34 @@ canvas{
 
 .fixed-border{
     position: fixed;
-    height: 80%;
     width: 50%;
+    height: 80%;
+    background-color: var(--dark-black2);
+}
+
+.flex-column{
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.center{
+    margin: auto;
+}
+
+.circle{
+    height: 5em;
+    width: 5em;
+    border-radius: 5em;
+}
+
+.round{
+    height: 3em;
+    width: 40%;
+    border-radius: 2em;
+}
+
+.absolute{
+    position: absolute;
 }
 
 @media screen and (min-width: 1300px){
